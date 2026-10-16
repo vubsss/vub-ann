@@ -1,0 +1,51 @@
+{
+  "approved_search_settings": [
+    {
+      "nprobe": 1
+    },
+    {
+      "nprobe": 2
+    },
+    {
+      "nprobe": 4
+    },
+    {
+      "nprobe": 8
+    },
+    {
+      "nprobe": 16
+    },
+    {
+      "nprobe": 32
+    },
+    {
+      "nprobe": 64
+    }
+  ],
+  "config": {
+    "build_settings": {
+      "m": 32,
+      "nbits": 8,
+      "nlist": 64
+    },
+    "dataset": "sift",
+    "index_family": "ivf_pq",
+    "k": 10,
+    "mode": "quick",
+    "quick_base_count": 20000,
+    "quick_query_count": 500,
+    "repetitions": 3,
+    "search_settings": {
+      "nprobe": 32
+    },
+    "seed": 1234
+  },
+  "highest_observed_recall": 0.7932,
+  "query_split": "tune",
+  "selection_target": 0.9,
+  "source_sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984",
+  "sweep_id": "b6d2a64a-e72b-44ad-9f2e-0f70bc15e178",
+  "sweep_plan_sha256": "0950d8f7a45bf7ff2b0207e07a98d418a7ed24ccd4c399bf95c184e4b15c11cb",
+  "target_reached": false,
+  "tune_run_id": "cf1f6faa-d352-49b6-9329-a984c2345281"
+}

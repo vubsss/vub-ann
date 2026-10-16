@@ -1,0 +1,119 @@
+{
+  "datasets": {
+    "glove": {
+      "hnsw": {
+        "0.9": {
+          "highest_observed_recall": 0.9952000000000001,
+          "reached": true,
+          "selected_median_qps": 8801.350422277459,
+          "selected_recall": 0.9344000000000001,
+          "selected_tune_run_id": "7a291993-cee0-4055-b783-a33d5673be7c",
+          "selection_file": "selections/quick_glove_hnsw_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.9952000000000001,
+          "reached": true,
+          "selected_median_qps": 6725.779724915144,
+          "selected_recall": 0.9558000000000001,
+          "selected_tune_run_id": "a19ef863-acf5-431e-ad6a-190f78a9d4a2",
+          "selection_file": "selections/quick_glove_hnsw_95.json"
+        }
+      },
+      "ivf_flat": {
+        "0.9": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 10722.413150954128,
+          "selected_recall": 0.9074,
+          "selected_tune_run_id": "ec1964e0-7fcb-4c5e-9fca-9b5005a219ee",
+          "selection_file": "selections/quick_glove_ivf_flat_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 5583.5633917365785,
+          "selected_recall": 0.956,
+          "selected_tune_run_id": "efde97e2-f75b-4888-a0d7-565fe5941f62",
+          "selection_file": "selections/quick_glove_ivf_flat_95.json"
+        }
+      },
+      "ivf_pq": {
+        "0.9": {
+          "highest_observed_recall": 0.6344000000000001,
+          "reached": false,
+          "selected_median_qps": 2276.662950336834,
+          "selected_recall": 0.6344000000000001,
+          "selected_tune_run_id": "b5d4210d-27f1-43f3-af35-64f15020d639",
+          "selection_file": "selections/quick_glove_ivf_pq_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.6344000000000001,
+          "reached": false,
+          "selected_median_qps": 2276.662950336834,
+          "selected_recall": 0.6344000000000001,
+          "selected_tune_run_id": "b5d4210d-27f1-43f3-af35-64f15020d639",
+          "selection_file": "selections/quick_glove_ivf_pq_95.json"
+        }
+      }
+    },
+    "sift": {
+      "hnsw": {
+        "0.9": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 35348.57189499036,
+          "selected_recall": 0.924,
+          "selected_tune_run_id": "7ce44765-5a8a-4208-bf33-a72d96295e60",
+          "selection_file": "selections/quick_sift_hnsw_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 22883.279477142758,
+          "selected_recall": 0.9763999999999999,
+          "selected_tune_run_id": "49554fab-a28a-4222-b80e-cf2c89deacf9",
+          "selection_file": "selections/quick_sift_hnsw_95.json"
+        }
+      },
+      "ivf_flat": {
+        "0.9": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 27609.709805573828,
+          "selected_recall": 0.9196000000000001,
+          "selected_tune_run_id": "c8c438f9-520a-413a-94ce-486078405539",
+          "selection_file": "selections/quick_sift_ivf_flat_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 16295.512471751614,
+          "selected_recall": 0.9636000000000001,
+          "selected_tune_run_id": "7c045440-25d8-4a0a-b07f-831e3093d6cd",
+          "selection_file": "selections/quick_sift_ivf_flat_95.json"
+        }
+      },
+      "ivf_pq": {
+        "0.9": {
+          "highest_observed_recall": 0.7932,
+          "reached": false,
+          "selected_median_qps": 4648.980753764388,
+          "selected_recall": 0.7932,
+          "selected_tune_run_id": "cf1f6faa-d352-49b6-9329-a984c2345281",
+          "selection_file": "selections/quick_sift_ivf_pq_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.7932,
+          "reached": false,
+          "selected_median_qps": 4648.980753764388,
+          "selected_recall": 0.7932,
+          "selected_tune_run_id": "cf1f6faa-d352-49b6-9329-a984c2345281",
+          "selection_file": "selections/quick_sift_ivf_pq_95.json"
+        }
+      }
+    }
+  },
+  "mode": "quick",
+  "plan_sha256": "0950d8f7a45bf7ff2b0207e07a98d418a7ed24ccd4c399bf95c184e4b15c11cb",
+  "sweep_id": "b6d2a64a-e72b-44ad-9f2e-0f70bc15e178"
+}

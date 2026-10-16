@@ -1,0 +1,51 @@
+{
+  "mode": "quick",
+  "seed": 1234,
+  "repetitions": 3,
+  "quick_base_count": 20000,
+  "quick_query_count": 500,
+  "datasets": {
+    "sift": {
+      "hnsw": {
+        "build": [
+          {"M": 8, "efConstruction": 80},
+          {"M": 16, "efConstruction": 100},
+          {"M": 32, "efConstruction": 120}
+        ],
+        "search": [4, 8, 16, 32, 64, 128, 256]
+      },
+      "ivf_flat": {
+        "build": [{"nlist": 32}, {"nlist": 64}, {"nlist": 128}],
+        "search": [1, 2, 4, 8, 16, 32, 64, 128]
+      },
+      "ivf_pq": {
+        "build": [
+          {"nlist": 32, "m": 16, "nbits": 8},
+          {"nlist": 64, "m": 32, "nbits": 8}
+        ],
+        "search": [1, 2, 4, 8, 16, 32, 64]
+      }
+    },
+    "glove": {
+      "hnsw": {
+        "build": [
+          {"M": 8, "efConstruction": 80},
+          {"M": 16, "efConstruction": 100},
+          {"M": 32, "efConstruction": 120}
+        ],
+        "search": [4, 8, 16, 32, 64, 128, 256]
+      },
+      "ivf_flat": {
+        "build": [{"nlist": 32}, {"nlist": 64}, {"nlist": 128}],
+        "search": [1, 2, 4, 8, 16, 32, 64, 128]
+      },
+      "ivf_pq": {
+        "build": [
+          {"nlist": 32, "m": 20, "nbits": 8},
+          {"nlist": 64, "m": 25, "nbits": 8}
+        ],
+        "search": [1, 2, 4, 8, 16, 32, 64]
+      }
+    }
+  }
+}

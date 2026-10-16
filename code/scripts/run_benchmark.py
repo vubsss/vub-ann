@@ -14,6 +14,7 @@ import hashlib
 import json
 from dataclasses import asdict
 from pathlib import Path
+from collections.abc import Callable
 
 from annbench.benchmarks.runner import BenchmarkConfig, benchmark
 from annbench.data import DATASETS, load_dataset
@@ -27,7 +28,10 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def save_rows(path: Path, rows: list[dict[str, object]]) -> None:
+def save_rows(
+    path: Path, rows: list[dict[str, object]], *,
+    replace_filter: Callable[[dict[str, str]], bool] | None = None,
+) -> None:
     """Keep exact-baseline and earlier benchmark runs in one parseable CSV."""
     path.parent.mkdir(parents=True, exist_ok=True)
     old_rows: list[dict[str, str]] = []
@@ -36,7 +40,7 @@ def save_rows(path: Path, rows: list[dict[str, object]]) -> None:
         with path.open(newline="") as source:
             reader = csv.DictReader(source)
             old_fields = reader.fieldnames or []
-            old_rows = list(reader)
+            old_rows = [row for row in reader if replace_filter is None or not replace_filter(row)]
     fields = list(dict.fromkeys([*old_fields, *(key for row in rows for key in row)]))
     temp_path = path.with_suffix(path.suffix + ".tmp")
     with temp_path.open("w", newline="") as target:

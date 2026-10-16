@@ -137,23 +137,50 @@ def benchmark(
         raise ValueError("loaded dataset does not match configuration")
     faiss.omp_set_num_threads(1)
     base = data.base[:config.quick_base_count] if config.mode == "quick" else data.base
-    queries, stored_ids, query_start, query_end = query_slice(data, config, split)
+    queries, stored_ids, _, _ = query_slice(data, config, split)
+    cutoffs = reference_cutoffs(base, queries, stored_ids, config)
+    index, build_seconds = build_index(config, base)
+    index_size_bytes = int(faiss.serialize_index(index).nbytes)
+    return benchmark_prebuilt(
+        config, data, split=split, source_sha256=source_sha256,
+        index=index, build_seconds=build_seconds, index_size_bytes=index_size_bytes,
+        cutoffs=cutoffs,
+    )
+
+
+def reference_cutoffs(
+    base: np.ndarray, queries: np.ndarray, stored_ids: np.ndarray, config: BenchmarkConfig,
+) -> np.ndarray:
+    """Get exact rank-k distances for this base, once for an entire sweep."""
     if config.mode == "quick":
         reference = faiss.IndexFlatL2(base.shape[1])
         reference.add(base)
-        exact_distances, exact_ids = reference.search(queries, config.k)
+        _, exact_ids = reference.search(queries, config.k)
         cutoffs = squared_l2_for_ids(base, queries, exact_ids).max(axis=1)
-        del reference, exact_distances, exact_ids
     else:
         # Ticket 02 validated the stored top-10 against exact search on all queries.
         cutoffs = squared_l2_for_ids(base, queries, stored_ids).max(axis=1)
+    return cutoffs
 
-    index, build_seconds = build_index(config, base)
+
+def benchmark_prebuilt(
+    config: BenchmarkConfig, data: LoadedDataset, *, split: str, source_sha256: str,
+    index: faiss.Index, build_seconds: float, index_size_bytes: int,
+    cutoffs: np.ndarray,
+) -> list[dict[str, Any]]:
+    """Measure a search setting using an index built once for its build settings."""
+    config.validate()
+    if data.spec.name != config.dataset:
+        raise ValueError("loaded dataset does not match configuration")
+    faiss.omp_set_num_threads(1)
+    base = data.base[:config.quick_base_count] if config.mode == "quick" else data.base
+    queries, _, query_start, query_end = query_slice(data, config, split)
+    if len(cutoffs) != len(queries) or index.ntotal != len(base):
+        raise ValueError("reference cutoffs or prebuilt index do not match this run")
     set_search_settings(index, config)
     _, found_ids = index.search(queries, config.k)
     found_true_distances = squared_l2_for_ids(base, queries, found_ids)
     recall = recall_at_k(found_ids, found_true_distances, cutoffs, k=config.k)
-    index_size_bytes = int(faiss.serialize_index(index).nbytes)
 
     for query in queries[:min(10, len(queries))]:
         index.search(query[None, :], config.k)

@@ -4,8 +4,8 @@ This is the implementation directory for Assignment 3, tracked by the project
 Git repository in the parent directory. The package layout is
 `annbench/data.py` for loading, `annbench/benchmarks/` for index and timing code,
 `annbench/experiments/` for Parts 3 and 4, `annbench/plotting/` for figures,
-`scripts/` for commands, and `tests/` for checks. Index-setting sweeps and the
-Part 3/4 experiments are added in later tickets.
+`scripts/` for commands, and `tests/` for checks. The Part 3/4 experiments are
+added in later tickets.
 
 ## Environment
 
@@ -138,3 +138,29 @@ call with one thread. Each CSV row is one timing repetition and includes its
 group median QPS, recall@10, build time, serialized index bytes, bytes/vector,
 original query bounds, settings, seed, checksum, and machine/library versions.
 Tuning and held-out rows have distinct `experiment` and `query_split` values.
+
+## Build and search sweeps
+
+From `code/`, run the Ticket 04 quick sweep:
+
+```bash
+python -m scripts.run_sweeps --plan configs/quick_sweep.json
+```
+
+The plan covers both datasets and all three families. It tries three HNSW
+builds (`M`), three IVF-Flat builds (`nlist`), and two IVF-PQ builds (different
+`m`, `nlist`, and eight-bit codes) per dataset. Each index is trained and added
+once; its search settings are swept from low effort to a high-effort endpoint.
+The quick sweep uses 20,000 base vectors and 500 queries from the original
+**tuning** half only. Search timing remains one query per call, one thread, and
+three repetitions. Re-running the same plan replaces its prior sweep rows.
+
+`../results/sweeps_quick.csv` contains one row per repetition, with 110 distinct
+settings across both datasets. `../results/sweep_summary_quick.json` records
+whether each family met recall 0.90 and 0.95 and its highest observed recall.
+The 12 files in `../results/selections/` freeze the tuning-selected setting for
+each dataset/family/threshold. A threshold miss stores the highest-recall
+setting and explicitly marks `target_reached: false`. The selection files also
+carry the search grid measured for the selected build, for later held-out
+trade-off curves. These quick-mode choices describe the subset only; full-size
+settings must be tuned on the full base and tuning queries before final reporting.

@@ -18,3 +18,21 @@ The assistant told the user it would find the ticket, implement the runner, and
 verify it; then reported the existing baseline/split, the completed quick
 tuning run, and the pending held-out and test checks. The final status is
 recorded by the corresponding Ticket 03 code, CSV, and ticket checklist.
+
+## Ticket 04
+
+### User prompt
+
+> do ticket 4
+
+### Assistant work and responses
+
+The assistant extended the runner so each built index can be reused across a
+search-parameter sweep. It added a two-dataset quick sweep plan, tuning-only
+selection logic for recall targets 0.90 and 0.95, a CLI, tests, raw CSV output,
+summary JSON, and frozen selection files. The first 100-query run showed
+timing noise, so the assistant increased the quick plan to 500 tuning queries
+and reran it. The final quick sweep produced 330 timing rows across 110
+settings. HNSW and IVF-Flat reached 0.95 on both datasets; the tested IVF-PQ
+settings peaked at 0.7932 on SIFT and 0.6344 on GloVe. No held-out query was
+used to select a setting for this sweep.

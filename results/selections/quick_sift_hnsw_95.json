@@ -1,0 +1,50 @@
+{
+  "approved_search_settings": [
+    {
+      "efSearch": 4
+    },
+    {
+      "efSearch": 8
+    },
+    {
+      "efSearch": 16
+    },
+    {
+      "efSearch": 32
+    },
+    {
+      "efSearch": 64
+    },
+    {
+      "efSearch": 128
+    },
+    {
+      "efSearch": 256
+    }
+  ],
+  "config": {
+    "build_settings": {
+      "M": 16,
+      "efConstruction": 100
+    },
+    "dataset": "sift",
+    "index_family": "hnsw",
+    "k": 10,
+    "mode": "quick",
+    "quick_base_count": 20000,
+    "quick_query_count": 500,
+    "repetitions": 3,
+    "search_settings": {
+      "efSearch": 32
+    },
+    "seed": 1234
+  },
+  "highest_observed_recall": 1.0,
+  "query_split": "tune",
+  "selection_target": 0.95,
+  "source_sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984",
+  "sweep_id": "b6d2a64a-e72b-44ad-9f2e-0f70bc15e178",
+  "sweep_plan_sha256": "0950d8f7a45bf7ff2b0207e07a98d418a7ed24ccd4c399bf95c184e4b15c11cb",
+  "target_reached": true,
+  "tune_run_id": "49554fab-a28a-4222-b80e-cf2c89deacf9"
+}
