@@ -1,0 +1,22 @@
+{
+  "config": {
+    "build_settings": {
+      "M": 16,
+      "efConstruction": 40
+    },
+    "dataset": "sift",
+    "index_family": "hnsw",
+    "k": 10,
+    "mode": "quick",
+    "quick_base_count": 20000,
+    "quick_query_count": 50,
+    "repetitions": 3,
+    "search_settings": {
+      "efSearch": 32
+    },
+    "seed": 1234
+  },
+  "query_split": "tune",
+  "source_sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984",
+  "tune_run_id": "18b4cc34-d972-4d91-b22b-c358aefc16c3"
+}

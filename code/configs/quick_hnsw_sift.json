@@ -1,0 +1,11 @@
+{
+  "dataset": "sift",
+  "index_family": "hnsw",
+  "build_settings": {"M": 16, "efConstruction": 40},
+  "search_settings": {"efSearch": 32},
+  "seed": 1234,
+  "mode": "quick",
+  "repetitions": 3,
+  "quick_base_count": 20000,
+  "quick_query_count": 50
+}

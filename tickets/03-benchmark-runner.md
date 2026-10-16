@@ -4,13 +4,20 @@
 
 ## Tasks
 
-- [ ] Add configuration for dataset, index family, build settings, search settings, seed, and quick/full modes.
-- [ ] Force one thread for the reported ANN search timings and issue queries one at a time.
-- [ ] Repeat each timing a few times; store each run and calculate the median QPS.
-- [ ] Record recall@10, build time, serialized index size, bytes/vector, machine/library versions, and all settings.
-- [ ] Keep tuning outputs distinct from final held-out outputs.
+- [x] Add configuration for dataset, index family, build settings, search settings, seed, and quick/full modes.
+- [x] Force one thread for the reported ANN search timings and issue queries one at a time.
+- [x] Repeat each timing a few times; store each run and calculate the median QPS.
+- [x] Record recall@10, build time, serialized index size, bytes/vector, machine/library versions, and all settings.
+- [x] Keep tuning outputs distinct from final held-out outputs.
 
 ## Acceptance
 
-- [ ] A small smoke run is repeatable and produces parseable, run-level CSV rows.
-- [ ] No setting is selected using the final 5,000 queries.
+- [x] A small smoke run is repeatable and produces parseable, run-level CSV rows.
+- [x] No setting is selected using the final 5,000 queries.
+
+Completed 17 October 2026. `results/benchmark_smoke.csv` has three quick-mode
+SIFT HNSW tuning rows and three held-out rows. The held-out invocation loaded
+the frozen `results/quick_hnsw_sift_selection.json`, which records the tuning
+run ID and dataset checksum. The CLI does not accept an arbitrary configuration
+for held-out queries. Thirteen tests passed. Ticket 04 will add setting sweeps and
+full-size candidate evaluation.

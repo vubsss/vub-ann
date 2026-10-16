@@ -4,8 +4,8 @@ This is the implementation directory for Assignment 3, tracked by the project
 Git repository in the parent directory. The package layout is
 `annbench/data.py` for loading, `annbench/benchmarks/` for index and timing code,
 `annbench/experiments/` for Parts 3 and 4, `annbench/plotting/` for figures,
-`scripts/` for commands, and `tests/` for checks. The benchmark and experiment
-modules are filled in by later tickets.
+`scripts/` for commands, and `tests/` for checks. Index-setting sweeps and the
+Part 3/4 experiments are added in later tickets.
 
 ## Environment
 
@@ -103,3 +103,38 @@ The assignment's `bash run_all.sh` and `bash run_all.sh --quick` commands will b
 added with the benchmark implementation in later tickets. Full runs will read
 these same two source files; quick runs will use a smaller base subset and the
 same held-out query split.
+
+## ANN benchmark runner
+
+`scripts.run_benchmark` measures one fixed HNSW, IVF-Flat, or IVF-PQ setting.
+The JSON configuration names the dataset and family, build and search settings,
+seed, quick/full mode, and repetition count. See `configs/quick_hnsw_sift.json`.
+Run from `code/`:
+
+```bash
+python -m scripts.run_benchmark \
+  --config configs/quick_hnsw_sift.json \
+  --selection-out ../results/quick_hnsw_sift_selection.json \
+  --output ../results/benchmark_smoke.csv
+python -m scripts.run_benchmark \
+  --selection-file ../results/quick_hnsw_sift_selection.json \
+  --output ../results/benchmark_smoke.csv
+```
+
+`--config` always uses tuning queries. `--selection-file` is required for a
+held-out run and freezes the setting, seed, mode, and source checksum from the
+tuning run; it also records the tuning run ID in each held-out row. Choose a
+setting using tuning results before running the held-out command. Use
+`--output ../results/results.csv` for benchmark results intended for the final
+report; the smoke CSV contains only a small protocol check.
+
+Quick mode uses the first 20,000 base vectors and 50 queries from **each**
+original half by default. Exact top-10 distances are recomputed for that base
+subset. Full mode uses all base vectors and all 5,000 queries in the selected
+half; its stored top-10 reference was validated by the exact baseline. ANN
+recall uses each returned vector's true squared L2 distance, so compressed
+index scores cannot inflate recall. Timed searches issue one query per FAISS
+call with one thread. Each CSV row is one timing repetition and includes its
+group median QPS, recall@10, build time, serialized index bytes, bytes/vector,
+original query bounds, settings, seed, checksum, and machine/library versions.
+Tuning and held-out rows have distinct `experiment` and `query_split` values.
