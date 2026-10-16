@@ -44,4 +44,10 @@ Measure the recall, single-query throughput, build time, and memory trade-offs o
 
 The final ZIP must contain only `report.pdf`, `code/`, `results/`, and `ai_log/`. The `code/` directory must include its `.git` history, all source (including the Part 4 generator), `README.md`, `requirements.txt`, `hypothesis.md`, and `run_all.sh`. Both hypotheses must be committed before their experiments' results. `bash run_all.sh` must regenerate reported numbers, figures, and tables from the data files; `bash run_all.sh --quick` must do so on a small subset in under 15 minutes on a laptop. `results/` must contain `results.csv` and `figures/`. Do not package datasets or index files. Keep this working `PLAN.md` and `tickets/` outside the final ZIP unless explicitly incorporated under `code/`.
 
+Working-repository decision (16 October): keep only the cwd Git repository and
+track `code/` there. At final packaging, export the `code/` history into a
+standalone repository in a temporary staging directory, include its `.git` in
+the ZIP's `code/`, and verify that both hypothesis commits precede the related
+experiment results. Do not create a nested Git repository in the working tree.
+
 Because AI was used for planning, preserve the prompts and responses in `ai_log/` and maintain `ai_log/ai_statement.md` with accurate source-file classifications.

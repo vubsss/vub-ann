@@ -10,8 +10,8 @@ AI tools were used to plan the assignment and write the working planning documen
 | `tickets/01-setup-and-data.md` through `tickets/10-submission-audit.md` | AI-generated | Planning tickets created from the assignment PDF and user instructions. |
 | `ai_log/conversation_2026-10-16.md` | AI-generated | Transcript assembled by the AI assistant. |
 | `ai_log/ai_statement.md` | AI-generated | This statement was drafted by the AI assistant. |
-| `.gitignore` | AI-generated | Keeps downloaded datasets and the separate code repository out of the planning repository. |
-| `code/.gitignore` | AI-generated | Keeps data, environments, caches, and indexes out of the code repository. |
+| `.gitignore` | AI-generated | Keeps downloaded datasets out of the project repository. |
+| `code/.gitignore` | AI-generated | Keeps data, environments, caches, and indexes out of tracked code. |
 | `code/README.md` | AI-generated | Setup, dataset, and split instructions for Ticket 01. |
 | `code/requirements.txt` | AI-generated | Pinned direct dependencies for Ticket 01. |
 | `code/annbench/__init__.py` | AI-generated | Package declaration. |
