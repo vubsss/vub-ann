@@ -71,6 +71,32 @@ validated shapes, ID ranges, normalization counts, versions, CPU, RAM, current
 thread settings, and the split. It may use more than 1 GiB of memory while loading each file. To inspect
 one file, pass `--dataset sift` or `--dataset glove`.
 
+## Exact baseline
+
+From `code/`, run:
+
+```bash
+python -m scripts.run_exact_baseline --data-dir ../data --repetitions 3
+```
+
+This builds one FAISS `IndexFlatL2` per dataset and checks its top-10 results
+against the stored neighbors and distances for **all 10,000 queries**. The
+reference check accepts a different ID only when its true distance ties at the
+tenth-neighbor boundary. For SIFT, the file's Euclidean distances are compared
+with the square root of squared L2; for normalized GloVe, angular distance is
+compared with half of squared L2. Recall uses each returned ID's true distance
+from the source vectors, which will also work for compressed ANN indexes later.
+
+The command then times the held-out rows `5000:10000` three times in each mode:
+one query per FAISS call and all queries in one FAISS call. It forces FAISS,
+OpenMP, OpenBLAS, and MKL to one thread. It writes one row per timing repetition
+to `../results/results.csv` (12 rows for both datasets at three repetitions),
+including elapsed time, per-run QPS, group median seconds and QPS, split,
+dataset checksum, reference check, and machine versions.
+Rerunning replaces the previous exact-baseline rows for the selected dataset.
+Use `--validation-only` to run the full reference check without timing or
+modifying the CSV.
+
 ## Reproduction
 
 The assignment's `bash run_all.sh` and `bash run_all.sh --quick` commands will be

@@ -95,3 +95,70 @@ It is **not a Git submodule**: the outer repo ignores `code/`, so commits in one
 ### Assistant final response
 
 Done. The cwd is now the only working Git repository. `code/` is tracked there, and its nested `.git` has been removed. The loader tests still pass (`2 passed`). I recorded the required standalone `code/.git` submission export in [PLAN.md](/home/vibhu/Desktop/M26/IRE/ass3/PLAN.md).
+
+## Exchange 6
+
+### User prompt
+
+> git push
+> ssh: Could not resolve hostname github.com: Temporary failure in name resolution
+> fatal: Could not read from remote repository.
+>
+> Please make sure you have the correct access rights
+> and the repository exists.
+>
+> ORIGIN os wrong?
+
+### Assistant progress responses
+
+> I’ll check the configured remote and test whether GitHub resolves. The error points to DNS before Git can check the repository or your access, so I’ll confirm whether the URL also needs attention.
+
+> `origin` has a valid GitHub SSH URL: `git@github.com:vubsss/vub-ann.git`. DNS lookup for `github.com` also fails here, so the remote has not been reached yet. A read-only remote check timed out during permission review; I’ll retry it once and inspect the local DNS setup.
+
+> The retry is still waiting on permission review. The local checks already establish that DNS is failing before SSH authentication, so I won’t change `origin` based on this error.
+
+### Assistant final response
+
+`origin` is set to `git@github.com:vubsss/vub-ann.git`, a valid SSH remote format. The reported failure is **DNS**: `github.com` could not be resolved, before Git could check the repository or SSH access. I left `origin` unchanged.
+
+Once DNS works, run `getent hosts github.com`, then `git push origin main`. I couldn’t verify remote access from here because automatic permission review timed out twice on the read-only `git ls-remote` check.
+
+## Exchange 7
+
+### User prompt
+
+> complete ticket 2
+
+### Assistant progress responses
+
+> I’ll read Ticket 2, build the FAISS exact baseline and tie-aware recall check, then run it against both downloaded datasets. I’ll save the measurements the ticket requires and verify them with tests.
+
+> The stored HDF5 files include distance columns. SIFT’s distances are Euclidean; GloVe’s angular distances correspond to half the squared distance after normalization. I’ll use those relationships to check the FAISS reference against the files, and score recall from true vector distances so a valid tie at rank 10 counts.
+
+> The recall tests pass, including missing neighbors, duplicate IDs, and a different ID tied at rank 10. The SIFT reference check is now searching all 10,000 queries. Once it finishes, I’ll check GloVe and run the timed 5,000-query reporting split.
+
+> SIFT’s full reference check passed: FAISS and the stored file differ on 65 of 10,000 top-10 ID sets, and every difference is explained by a valid tie. The timed run is still in progress; it will write the raw repetitions and medians to `results/results.csv`.
+
+> The SIFT timing is still running through 5,000 individual FAISS calls per repetition; this is the slower measurement by design. I’ve added the exact-baseline method and batch-versus-single explanation to the report draft. I’ll fill its table from the measured CSV.
+
+> The first SIFT single-query repetition took 138.6 seconds, or 36.1 QPS, with one thread. Two repetitions remain before the median is fixed. The full reference checks still cover all 10,000 queries; timing uses only the held-out 5,000.
+
+> The first two SIFT single-query repetitions agree closely: 138.565 and 138.425 seconds. The third is underway. After that, the script will measure batch mode on the same held-out queries and proceed to GloVe.
+
+> SIFT’s batch run is about three times faster so far: its first repetition took 47.2 seconds (105.9 QPS), versus about 138.5 seconds per single-query repetition. The remaining batch repeats will determine the median.
+
+> SIFT is saved in the CSV: median 36.1 QPS one query at a time and 116.6 QPS in one batch. GloVe’s exact index is built, and its all-query reference check is running before timing starts.
+
+> GloVe’s reference check passed too. One query has a different top-10 ID set from the stored file, with distances matching at the boundary; tie-aware recall is 1.0 in both directions on both datasets. GloVe’s three single-query timing repetitions are underway.
+
+> The first GloVe single-query repetition took 108.0 seconds (46.3 QPS). The code is set to retain all three repetition times in the CSV, so the final figure will use their median rather than this first run.
+
+> GloVe’s first two single-query repetitions are 108.0 and 113.7 seconds. The third is running. After its batch measurements finish, I’ll check the CSV, fill the report draft with the medians, and mark the ticket complete.
+
+> Both datasets have finished. I’m checking the four CSV rows against their recorded repetition times and held-out split, then I’ll put the measured medians into the report draft and commit Ticket 2.
+
+> The measurements and checks are consistent. I’m making one CSV adjustment before committing: each timing repetition will get its own row, with the median repeated for its group. That makes the raw runs directly traceable in the format the assignment asks for.
+
+### Assistant final response
+
+Ticket 2 is complete. FAISS exact search agrees with both stored references on all 10,000 queries when boundary ties are allowed; six tests pass. Held-out median QPS: SIFT 36.1 single / 116.6 batch; GloVe 44.8 single / 116.6 batch. [results.csv](/home/vibhu/Desktop/M26/IRE/ass3/results/results.csv) has all 12 timed repetitions and metadata; [REPORT_DRAFT.md](/home/vibhu/Desktop/M26/IRE/ass3/REPORT_DRAFT.md) explains the batch difference. The final PDF remains Ticket 08.
