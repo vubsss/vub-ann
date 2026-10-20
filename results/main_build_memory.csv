@@ -1,0 +1,7 @@
+dataset,family,status,measured_recall,build_seconds,index_size_bytes,bytes_per_vector,run_id,build_settings,search_settings
+sift,hnsw,reached,0.96468,208.603768897,656258362,656.258362,ad579c6a-5cae-4317-99ef-909e0f9d664f,"{""M"": 16, ""efConstruction"": 120}","{""efSearch"": 64}"
+sift,ivf_flat,reached,0.9743,158.77668384599974,522130059,522.130059,ca600e06-9aea-41fb-b9a8-a140fde7158d,"{""nlist"": 4096}","{""nprobe"": 64}"
+sift,ivf_pq,unreachable,0.8734799999999999,,,,51c09e1d-be17-4e8f-a843-544afac0d9b5,"{""m"": 64, ""nbits"": 8, ""nlist"": 1024}","{""nprobe"": 256}"
+glove,hnsw,reached,0.9598399999999999,509.91682725100054,795500090,672.1509758228462,784006d1-f40d-4ca1-9f1c-8ff0ab9beb9d,"{""M"": 32, ""efConstruction"": 160}","{""efSearch"": 512}"
+glove,ivf_flat,reached,0.9803200000000001,17.409060356000737,483291643,408.35312721269037,d0c11f20-bd96-4047-ba32-fb2ae749dae9,"{""nlist"": 1024}","{""nprobe"": 256}"
+glove,ivf_pq,unreachable,0.8630400000000001,,,,9fd64c5b-18e0-4b52-94fd-b10e835fe861,"{""m"": 50, ""nbits"": 8, ""nlist"": 1024}","{""nprobe"": 1024}"

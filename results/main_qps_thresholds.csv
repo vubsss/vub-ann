@@ -1,0 +1,17 @@
+dataset,family,target_recall,status,median_qps,measured_recall,highest_measured_recall,run_id,build_settings,search_settings
+sift,hnsw,0.9,reached,4492.940194548756,0.9391,0.9886400000000002,d0496ecc-e3d2-41e6-aa2c-0b442107d79b,"{""M"": 32, ""efConstruction"": 160}","{""efSearch"": 32}"
+sift,hnsw,0.95,reached,3218.6456130051693,0.96468,0.9886400000000002,ad579c6a-5cae-4317-99ef-909e0f9d664f,"{""M"": 16, ""efConstruction"": 120}","{""efSearch"": 64}"
+sift,ivf_flat,0.9,reached,1117.7255311244921,0.93332,0.9990800000000001,7b76851c-43dd-4e17-8664-4c10f34c1a96,"{""nlist"": 1024}","{""nprobe"": 16}"
+sift,ivf_flat,0.95,reached,942.7825191101359,0.9743,0.9990800000000001,ca600e06-9aea-41fb-b9a8-a140fde7158d,"{""nlist"": 4096}","{""nprobe"": 64}"
+sift,ivf_pq,0.9,unreachable,,0.8734799999999999,0.8734799999999999,51c09e1d-be17-4e8f-a843-544afac0d9b5,"{""m"": 64, ""nbits"": 8, ""nlist"": 1024}","{""nprobe"": 256}"
+sift,ivf_pq,0.95,unreachable,,0.8734799999999999,0.8734799999999999,51c09e1d-be17-4e8f-a843-544afac0d9b5,"{""m"": 64, ""nbits"": 8, ""nlist"": 1024}","{""nprobe"": 256}"
+sift,IndexFlatL2,0.9,reached,36.08410420907022,1.0,1.0,90ed7c1e-2d6f-4ec5-bd0b-75103ac1a50f,,
+sift,IndexFlatL2,0.95,reached,36.08410420907022,1.0,1.0,90ed7c1e-2d6f-4ec5-bd0b-75103ac1a50f,,
+glove,hnsw,0.9,reached,1328.1683444834216,0.9276200000000001,0.9598399999999999,263914de-bcab-4802-bf3f-a25438d22c8d,"{""M"": 32, ""efConstruction"": 160}","{""efSearch"": 256}"
+glove,hnsw,0.95,reached,651.7429474244418,0.9598399999999999,0.9598399999999999,784006d1-f40d-4ca1-9f1c-8ff0ab9beb9d,"{""M"": 32, ""efConstruction"": 160}","{""efSearch"": 512}"
+glove,ivf_flat,0.9,reached,551.3716528627644,0.9046,0.9803200000000001,c25d52a1-4858-4f8d-b128-26a8f9f2cc5a,"{""nlist"": 1024}","{""nprobe"": 64}"
+glove,ivf_flat,0.95,reached,142.1527390874382,0.9803200000000001,0.9803200000000001,d0c11f20-bd96-4047-ba32-fb2ae749dae9,"{""nlist"": 1024}","{""nprobe"": 256}"
+glove,ivf_pq,0.9,unreachable,,0.8630400000000001,0.8630400000000001,9fd64c5b-18e0-4b52-94fd-b10e835fe861,"{""m"": 50, ""nbits"": 8, ""nlist"": 1024}","{""nprobe"": 1024}"
+glove,ivf_pq,0.95,unreachable,,0.8630400000000001,0.8630400000000001,9fd64c5b-18e0-4b52-94fd-b10e835fe861,"{""m"": 50, ""nbits"": 8, ""nlist"": 1024}","{""nprobe"": 1024}"
+glove,IndexFlatL2,0.9,reached,44.78368750929128,1.0,1.0,25aa7c3a-2fb4-40f6-87f7-958d2de7732f,,
+glove,IndexFlatL2,0.95,reached,44.78368750929128,1.0,1.0,25aa7c3a-2fb4-40f6-87f7-958d2de7732f,,

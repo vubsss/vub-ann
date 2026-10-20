@@ -39,6 +39,21 @@ def test_quick_split_stays_on_its_original_half() -> None:
     assert np.array_equal(report, data.queries[2:])
 
 
+def test_full_tuning_sample_does_not_shorten_final_split() -> None:
+    data = _tiny_data()
+    config = BenchmarkConfig(
+        dataset="sift", index_family="hnsw",
+        build_settings={"M": 4, "efConstruction": 20},
+        search_settings={"efSearch": 20}, mode="full",
+        tune_query_count=1,
+    )
+    tune, _, tune_start, tune_end = query_slice(data, config, "tune")
+    report, _, report_start, report_end = query_slice(data, config, "report")
+    assert (tune_start, tune_end, report_start, report_end) == (0, 1, 2, 4)
+    assert np.array_equal(tune, data.queries[:1])
+    assert np.array_equal(report, data.queries[2:])
+
+
 def test_run_level_rows_and_csv_round_trip(tmp_path: Path) -> None:
     config = _config()
     tune = benchmark(config, _tiny_data(), split="tune", source_sha256="fixture")

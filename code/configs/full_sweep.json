@@ -1,0 +1,50 @@
+{
+  "mode": "full",
+  "seed": 1234,
+  "repetitions": 2,
+  "quick_base_count": 20000,
+  "quick_query_count": 500,
+  "tune_query_count": 1000,
+  "datasets": {
+    "sift": {
+      "hnsw": {
+        "build": [
+          {"M": 16, "efConstruction": 120},
+          {"M": 32, "efConstruction": 160}
+        ],
+        "search": [16, 32, 64, 128, 256, 512]
+      },
+      "ivf_flat": {
+        "build": [{"nlist": 1024}, {"nlist": 4096}],
+        "search": [1, 4, 16, 64, 256, 1024]
+      },
+      "ivf_pq": {
+        "build": [
+          {"nlist": 1024, "m": 32, "nbits": 8},
+          {"nlist": 1024, "m": 64, "nbits": 8}
+        ],
+        "search": [1, 4, 16, 64, 256, 1024]
+      }
+    },
+    "glove": {
+      "hnsw": {
+        "build": [
+          {"M": 16, "efConstruction": 120},
+          {"M": 32, "efConstruction": 160}
+        ],
+        "search": [16, 32, 64, 128, 256, 512]
+      },
+      "ivf_flat": {
+        "build": [{"nlist": 1024}, {"nlist": 4096}],
+        "search": [1, 4, 16, 64, 256, 1024]
+      },
+      "ivf_pq": {
+        "build": [
+          {"nlist": 1024, "m": 25, "nbits": 8},
+          {"nlist": 1024, "m": 50, "nbits": 8}
+        ],
+        "search": [1, 4, 16, 64, 256, 1024]
+      }
+    }
+  }
+}

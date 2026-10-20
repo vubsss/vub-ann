@@ -1,0 +1,126 @@
+{
+  "datasets": {
+    "glove": {
+      "hnsw": {
+        "0.9": {
+          "highest_observed_recall": 0.9599,
+          "reached": true,
+          "selected_median_qps": 516.2121562698147,
+          "selected_recall": 0.9278,
+          "selected_tune_run_id": "7326569e-305e-402e-9a42-853fdb7b81d0",
+          "selection_file": "selections/full_glove_hnsw_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.9599,
+          "reached": true,
+          "selected_median_qps": 282.51008283009486,
+          "selected_recall": 0.9599,
+          "selected_tune_run_id": "2bc478d8-24f9-4ffe-ace3-67d9e028787e",
+          "selection_file": "selections/full_glove_hnsw_95.json"
+        }
+      },
+      "ivf_flat": {
+        "0.9": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 336.7216086060994,
+          "selected_recall": 0.904,
+          "selected_tune_run_id": "8bd3768b-c147-4c13-8823-b4a288addebb",
+          "selection_file": "selections/full_glove_ivf_flat_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 94.12296465198041,
+          "selected_recall": 0.984,
+          "selected_tune_run_id": "7d68c017-4def-440c-bcc9-553da91f1246",
+          "selection_file": "selections/full_glove_ivf_flat_95.json"
+        }
+      },
+      "ivf_pq": {
+        "0.9": {
+          "highest_observed_recall": 0.8618000000000002,
+          "reached": false,
+          "selected_median_qps": 30.720687163004456,
+          "selected_recall": 0.8618000000000002,
+          "selected_tune_run_id": "78b68433-5664-43fc-80bb-3da85ca7fece",
+          "selection_file": "selections/full_glove_ivf_pq_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.8618000000000002,
+          "reached": false,
+          "selected_median_qps": 30.720687163004456,
+          "selected_recall": 0.8618000000000002,
+          "selected_tune_run_id": "78b68433-5664-43fc-80bb-3da85ca7fece",
+          "selection_file": "selections/full_glove_ivf_pq_95.json"
+        }
+      }
+    },
+    "sift": {
+      "hnsw": {
+        "0.9": {
+          "highest_observed_recall": 0.9999,
+          "reached": true,
+          "selected_median_qps": 3964.739478435652,
+          "selected_recall": 0.928,
+          "selected_tune_run_id": "eca658c9-3bd3-410c-9450-238a165fee8a",
+          "selection_file": "selections/full_sift_hnsw_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.9999,
+          "reached": true,
+          "selected_median_qps": 2971.78702634261,
+          "selected_recall": 0.9560000000000001,
+          "selected_tune_run_id": "a562bca3-b81a-44f9-ade6-6b0bd5727b7b",
+          "selection_file": "selections/full_sift_hnsw_95.json"
+        }
+      },
+      "ivf_flat": {
+        "0.9": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 1044.769869885967,
+          "selected_recall": 0.922,
+          "selected_tune_run_id": "05e0feb0-d289-4776-b564-b76d75d61d07",
+          "selection_file": "selections/full_sift_ivf_flat_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 1.0,
+          "reached": true,
+          "selected_median_qps": 987.3730825148344,
+          "selected_recall": 0.9690000000000001,
+          "selected_tune_run_id": "c8752611-8e0d-4273-9a03-c7c8fa65ab89",
+          "selection_file": "selections/full_sift_ivf_flat_95.json"
+        }
+      },
+      "ivf_pq": {
+        "0.9": {
+          "highest_observed_recall": 0.8726000000000002,
+          "reached": false,
+          "selected_median_qps": 116.69398404080611,
+          "selected_recall": 0.8726000000000002,
+          "selected_tune_run_id": "89239235-ed34-465f-b467-136e0940707d",
+          "selection_file": "selections/full_sift_ivf_pq_90.json"
+        },
+        "0.95": {
+          "highest_observed_recall": 0.8726000000000002,
+          "reached": false,
+          "selected_median_qps": 116.69398404080611,
+          "selected_recall": 0.8726000000000002,
+          "selected_tune_run_id": "89239235-ed34-465f-b467-136e0940707d",
+          "selection_file": "selections/full_sift_ivf_pq_95.json"
+        }
+      }
+    }
+  },
+  "mode": "full",
+  "plan_sha256": "f75f8f35e75351d2319170d1731584b6cd809fd4419e5362e7314749c7dae858",
+  "sweep_id": "78109083-8699-4e2c-a4fd-b4fcd5099c68",
+  "sweep_ids": [
+    "9bed1d08-4a2a-4506-a45a-af6d6c298e64",
+    "35811351-5891-4749-aa0b-92b2e08e53de",
+    "d1b9d1c5-1856-4c63-9129-d4984a8f03de",
+    "4ff8722c-d58a-4b20-a871-fc5dcc1d53f6",
+    "78109083-8699-4e2c-a4fd-b4fcd5099c68"
+  ]
+}

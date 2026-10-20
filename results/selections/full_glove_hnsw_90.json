@@ -1,0 +1,48 @@
+{
+  "approved_search_settings": [
+    {
+      "efSearch": 16
+    },
+    {
+      "efSearch": 32
+    },
+    {
+      "efSearch": 64
+    },
+    {
+      "efSearch": 128
+    },
+    {
+      "efSearch": 256
+    },
+    {
+      "efSearch": 512
+    }
+  ],
+  "config": {
+    "build_settings": {
+      "M": 32,
+      "efConstruction": 160
+    },
+    "dataset": "glove",
+    "index_family": "hnsw",
+    "k": 10,
+    "mode": "full",
+    "quick_base_count": 20000,
+    "quick_query_count": 500,
+    "repetitions": 2,
+    "search_settings": {
+      "efSearch": 256
+    },
+    "seed": 1234,
+    "tune_query_count": 1000
+  },
+  "highest_observed_recall": 0.9599,
+  "query_split": "tune",
+  "selection_target": 0.9,
+  "source_sha256": "544af1d5e84e112cd4749571dcfd8ca109818a572f850af75a3a09e093a953c4",
+  "sweep_id": "78109083-8699-4e2c-a4fd-b4fcd5099c68",
+  "sweep_plan_sha256": "f75f8f35e75351d2319170d1731584b6cd809fd4419e5362e7314749c7dae858",
+  "target_reached": true,
+  "tune_run_id": "7326569e-305e-402e-9a42-853fdb7b81d0"
+}

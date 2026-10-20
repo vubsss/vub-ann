@@ -18,6 +18,7 @@ from pathlib import Path
 import faiss
 
 from annbench.benchmarks.runner import benchmark_prebuilt, build_index, query_slice, reference_cutoffs
+from annbench.benchmarks.index_cache import load_index, save_index
 from annbench.benchmarks.sweeps import FAMILIES, TARGETS, choose_setting, configurations, selection_document
 from annbench.data import DATASETS, load_dataset
 from scripts.run_benchmark import save_rows, sha256
@@ -30,6 +31,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, help="run-level CSV (defaults to results/sweeps_MODE.csv)")
     parser.add_argument("--summary", type=Path, help="threshold JSON (defaults to results/sweep_summary_MODE.json)")
     parser.add_argument("--selection-dir", type=Path, default=Path(__file__).resolve().parents[2] / "results/selections")
+    parser.add_argument("--index-cache-dir", type=Path, default=Path(__file__).resolve().parents[2] / "results/index_cache")
     parser.add_argument("--dataset", choices=[*DATASETS, "both"], default="both")
     parser.add_argument("--family", choices=[*FAMILIES, "all"], default="all")
     args = parser.parse_args()
@@ -53,16 +55,20 @@ def main() -> None:
     families = FAMILIES if args.family == "all" else [args.family]
     summary: dict[str, object] = {
         "sweep_id": sweep_id, "plan_sha256": plan_sha256,
-        "mode": plan["mode"], "datasets": {},
+        "sweep_ids": [sweep_id], "mode": plan["mode"], "datasets": {},
     }
+    if args.summary.exists():
+        previous = json.loads(args.summary.read_text())
+        if previous.get("plan_sha256") == plan_sha256 and previous.get("mode") == plan["mode"]:
+            summary["datasets"] = previous.get("datasets", {})
+            summary["sweep_ids"] = [*previous.get("sweep_ids", [previous["sweep_id"]]), sweep_id]
     faiss.omp_set_num_threads(1)
     for name in names:
         source_path = args.data_dir / DATASETS[name].filename
         source_hash = sha256(source_path)
         print(f"Loading {name} for tuning sweep", flush=True)
         data = load_dataset(source_path, DATASETS[name])
-        dataset_summary: dict[str, object] = {}
-        summary["datasets"][name] = dataset_summary
+        dataset_summary: dict[str, object] = summary["datasets"].setdefault(name, {})
         for family in families:
             configs = configurations(plan, name, family)
             base = data.base[:configs[0].quick_base_count] if configs[0].mode == "quick" else data.base
@@ -75,9 +81,23 @@ def main() -> None:
                 key = json.dumps(config.build_settings, sort_keys=True)
                 build_groups.setdefault(key, []).append(config)
             for build_key, group in build_groups.items():
-                index, build_seconds = build_index(group[0], base)
-                index_size_bytes = int(faiss.serialize_index(index).nbytes)
-                print(f"{name} {family} build {build_key}: {build_seconds:.2f}s", flush=True)
+                cached = load_index(
+                    args.index_cache_dir, group[0], source_sha256=source_hash,
+                    expected_base_count=len(base),
+                ) if plan["mode"] == "full" else None
+                if cached is not None:
+                    index, build_seconds, index_size_bytes = cached
+                    print(f"{name} {family} loaded build {build_key}: {build_seconds:.2f}s", flush=True)
+                else:
+                    index, build_seconds = build_index(group[0], base)
+                    if plan["mode"] == "full":
+                        index_size_bytes = save_index(
+                            args.index_cache_dir, group[0], index,
+                            source_sha256=source_hash, build_seconds=build_seconds,
+                        )
+                    else:
+                        index_size_bytes = int(faiss.serialize_index(index).nbytes)
+                    print(f"{name} {family} build {build_key}: {build_seconds:.2f}s", flush=True)
                 for config in group:
                     rows = benchmark_prebuilt(
                         config, data, split="tune", source_sha256=source_hash,

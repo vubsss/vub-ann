@@ -8,6 +8,7 @@ import pytest
 from annbench.benchmarks.runner import (
     benchmark_prebuilt, build_index, query_slice, reference_cutoffs,
 )
+from annbench.benchmarks.index_cache import load_index, save_index
 from annbench.benchmarks.sweeps import choose_setting, configurations, selection_document
 from annbench.data import DatasetSpec, LoadedDataset
 from scripts.run_benchmark import save_rows
@@ -82,6 +83,25 @@ def test_prebuilt_index_reused_across_search_settings() -> None:
     assert rows[0][0]["build_seconds"] == rows[1][0]["build_seconds"]
     assert rows[0][0]["index_size_bytes"] == rows[1][0]["index_size_bytes"]
     assert rows[0][0]["search_settings"] != rows[1][0]["search_settings"]
+
+
+def test_cached_build_round_trip_keeps_size_and_provenance(tmp_path: Path) -> None:
+    data = _tiny_data()
+    config = configurations({
+        "mode": "quick", "seed": 7, "repetitions": 2,
+        "quick_base_count": 20, "quick_query_count": 2,
+        "datasets": {"sift": {"hnsw": {
+            "build": [{"M": 4, "efConstruction": 20}], "search": [4],
+        }}},
+    }, "sift", "hnsw")[0]
+    index, seconds = build_index(config, data.base)
+    size = save_index(tmp_path, config, index, source_sha256="fixture", build_seconds=seconds)
+    loaded = load_index(tmp_path, config, source_sha256="fixture", expected_base_count=20)
+    assert loaded is not None
+    assert loaded[1:] == (seconds, size)
+    assert loaded[0].ntotal == 20
+    with pytest.raises(ValueError, match="source"):
+        load_index(tmp_path, config, source_sha256="changed", expected_base_count=20)
 
 
 def test_selection_provenance_and_sweep_replacement(tmp_path: Path) -> None:

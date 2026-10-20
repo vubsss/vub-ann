@@ -164,3 +164,50 @@ setting and explicitly marks `target_reached: false`. The selection files also
 carry the search grid measured for the selected build, for later held-out
 trade-off curves. These quick-mode choices describe the subset only; full-size
 settings must be tuned on the full base and tuning queries before final reporting.
+
+## Main benchmark (Ticket 05)
+
+The full-size plan in `configs/full_sweep.json` searches two construction
+settings per family and dataset. It builds indexes on all base vectors, uses
+the first 1,000 queries of the tuning half to choose settings, and repeats
+each tuning search twice. The remaining 4,000 tuning queries are unused.
+Full-size IVF centroid training uses at most 50 training vectors per centroid;
+IVF-PQ codebook training uses at most 100 per centroid. FAISS samples those
+vectors from the full base using the recorded seed. All base vectors are then
+added to the index. Full-size HNSW construction uses four FAISS threads;
+every timed search uses one. Build thread count, training caps, and the FAISS
+version are recorded with runs.
+The held-out phase uses **all** original query rows 5,000:10,000 and three
+timing repetitions. No setting is chosen from held-out recall or QPS.
+
+From `code/`:
+
+```bash
+python -m scripts.run_sweeps --plan configs/full_sweep.json \
+  --output ../results/results.csv \
+  --summary ../results/sweep_summary_full.json
+python -m scripts.run_main_final
+python -m scripts.analyze_main
+```
+
+The first command records tuning runs and frozen selections and keeps
+temporary serialized full-size indexes in `../results/index_cache/`.
+The second loads the selected tuned builds (or rebuilds them if the cache is
+absent) and measures its tuning-approved search grid through the first setting
+that reaches 0.97 tuning recall, or the full grid if none does, on the
+5,000 held-out queries. This endpoint rule uses only tuning data. The cache
+has checksum and FAISS-version checks and
+must be omitted from the submission ZIP. The final runs record the corresponding
+tuning run ID for every final setting. It replaces prior final runs for the
+same dataset and family when rerun. The analysis command requires complete
+final runs and writes two figures to `../results/figures/`, threshold and
+build/memory CSV tables, a plotted-point provenance CSV, and
+`../results/main_analysis.md` from `../results/results.csv`.
+
+The 0.90 and 0.95 threshold entries use the settings frozen by tuning, even
+if the held-out recall falls below the target. Such a miss is marked
+`selected_below_target` if another tuning-approved setting reaches it and
+`unreachable` if none does. There is no interpolation or extrapolation, and
+held-out QPS is never used to choose a setting. The plotted family curves show measured
+Pareto-frontier points. Exact Flat is a single-query reference point, not
+the much faster batch-search number.

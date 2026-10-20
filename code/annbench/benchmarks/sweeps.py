@@ -33,6 +33,7 @@ def configurations(plan: dict[str, Any], dataset: str, family: str) -> list[Benc
                 repetitions=plan["repetitions"],
                 quick_base_count=plan["quick_base_count"],
                 quick_query_count=plan["quick_query_count"],
+                tune_query_count=plan.get("tune_query_count"),
             )
             config.validate()
             configs.append(config)

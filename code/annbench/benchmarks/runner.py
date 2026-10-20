@@ -35,6 +35,7 @@ class BenchmarkConfig:
     k: int = 10
     quick_base_count: int = 20_000
     quick_query_count: int = 50
+    tune_query_count: int | None = None
 
     @classmethod
     def from_file(cls, path: Path) -> BenchmarkConfig:
@@ -58,6 +59,8 @@ class BenchmarkConfig:
             raise ValueError("quick_base_count must be between 10 and the dataset size")
         if not 1 <= self.quick_query_count <= DATASETS[self.dataset].tune_count:
             raise ValueError("quick_query_count must be between 1 and 5000")
+        if self.tune_query_count is not None and not 1 <= self.tune_query_count <= DATASETS[self.dataset].tune_count:
+            raise ValueError("tune_query_count must be between 1 and 5000")
         build_keys = {
             "hnsw": {"M", "efConstruction"},
             "ivf_flat": {"nlist"},
@@ -83,7 +86,8 @@ class BenchmarkConfig:
 
 def build_index(config: BenchmarkConfig, base: np.ndarray) -> tuple[faiss.Index, float]:
     """Build and train one index; the time includes training and vector insertion."""
-    faiss.omp_set_num_threads(1)
+    build_threads = 4 if config.mode == "full" and config.index_family == "hnsw" else 1
+    faiss.omp_set_num_threads(build_threads)
     np.random.seed(config.seed)
     dimension = base.shape[1]
     start = perf_counter()
@@ -95,6 +99,8 @@ def build_index(config: BenchmarkConfig, base: np.ndarray) -> tuple[faiss.Index,
             faiss.IndexFlatL2(dimension), dimension, config.build_settings["nlist"], faiss.METRIC_L2,
         )
         index.cp.seed = config.seed
+        if config.mode == "full":
+            index.cp.max_points_per_centroid = 50
     else:
         index = faiss.IndexIVFPQ(
             faiss.IndexFlatL2(dimension), dimension, config.build_settings["nlist"],
@@ -102,10 +108,16 @@ def build_index(config: BenchmarkConfig, base: np.ndarray) -> tuple[faiss.Index,
         )
         index.cp.seed = config.seed
         index.pq.cp.seed = config.seed
-    if not index.is_trained:
-        index.train(base)
-    index.add(base)
-    elapsed = perf_counter() - start
+        if config.mode == "full":
+            index.cp.max_points_per_centroid = 50
+            index.pq.cp.max_points_per_centroid = 100
+    try:
+        if not index.is_trained:
+            index.train(base)
+        index.add(base)
+        elapsed = perf_counter() - start
+    finally:
+        faiss.omp_set_num_threads(1)
     if index.ntotal != len(base):
         raise RuntimeError("index did not receive all base vectors")
     return index, elapsed
@@ -123,7 +135,12 @@ def query_slice(data: LoadedDataset, config: BenchmarkConfig, split: str) -> tup
     if split not in {"tune", "report"}:
         raise ValueError("split must be tune or report")
     start = 0 if split == "tune" else data.spec.tune_count
-    count = config.quick_query_count if config.mode == "quick" else data.spec.tune_count
+    if config.mode == "quick":
+        count = config.quick_query_count
+    elif split == "tune" and config.tune_query_count is not None:
+        count = config.tune_query_count
+    else:
+        count = data.spec.tune_count
     end = start + count
     return data.queries[start:end], data.neighbors[start:end, :config.k], start, end
 
@@ -226,6 +243,9 @@ def benchmark_prebuilt(
         "build_settings": json.dumps(config.build_settings, sort_keys=True),
         "search_settings": json.dumps(config.search_settings, sort_keys=True),
         "seed": config.seed,
+        "build_threads": 4 if config.mode == "full" and config.index_family == "hnsw" else 1,
+        "ivf_train_max_points_per_centroid": 50 if config.mode == "full" and config.index_family != "hnsw" else "",
+        "pq_train_max_points_per_centroid": 100 if config.mode == "full" and config.index_family == "ivf_pq" else "",
         "config_json": json.dumps(asdict(config), sort_keys=True),
         "faiss_threads": faiss.omp_get_max_threads(),
         "omp_num_threads": os.environ.get("OMP_NUM_THREADS", ""),
