@@ -1,9 +1,10 @@
 # AI use statement
 
-AI tools were used to plan the assignment, implement Tickets 01 through 05,
+AI tools were used to plan the assignment, implement Tickets 01 through 06,
 and draft report prose. The prompts and responses are recorded in
 `ai_log/conversation_2026-10-16.md`, `ai_log/conversation_2026-10-17.md`,
-and `ai_log/conversation_2026-10-20.md`.
+`ai_log/conversation_2026-10-20.md`, and
+`ai_log/conversation_2026-10-21.md`.
 
 ## Source-file classification (current workspace)
 
@@ -54,5 +55,12 @@ and `ai_log/conversation_2026-10-20.md`.
 | `results/main_plot_points.csv` | AI-generated | Run IDs and settings behind each plotted point. |
 | `results/figures/*` | AI-generated | Recall–QPS plots generated from held-out rows. |
 | `ai_log/conversation_2026-10-20.md` | AI-generated | Ticket 05 interaction log, including the interrupted run and resumption. |
+| `code/hypothesis.md` | AI-generated | Part 3 prediction committed before its result generation. |
+| `code/scripts/run_query_difficulty.py` | AI-generated | Per-bin held-out GloVe recall analysis using frozen index settings. |
+| `code/tests/test_query_difficulty.py` | AI-generated | Equal-count and deterministic-tie bin tests. |
+| `results/query_difficulty.csv` | AI-generated | Per-bin measured recall, counts, score ranges, settings, and run IDs. |
+| `results/query_difficulty_analysis.md` | AI-generated | Part 3 results and hypothesis assessment. |
+| `results/figures/glove_query_difficulty.*` | AI-generated | Part 3 recall-by-bin figure from measured results. |
+| `ai_log/conversation_2026-10-21.md` | AI-generated | Ticket 06 interaction log. |
 
 The assignment PDF is a supplied reference document, not authored here. Continue updating this table as source files are added.

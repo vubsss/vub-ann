@@ -211,3 +211,25 @@ if the held-out recall falls below the target. Such a miss is marked
 held-out QPS is never used to choose a setting. The plotted family curves show measured
 Pareto-frontier points. Exact Flat is a single-query reference point, not
 the much faster batch-search number.
+
+## Part 3: GloVe query difficulty (Ticket 06)
+
+The prediction and bin definition were committed in `hypothesis.md` as commit
+`82d9cdc` before the experiment was run. To reproduce the four-bin analysis
+after the full benchmark and its temporary index cache are available, run from
+`code/`:
+
+```bash
+.venv/bin/python -m scripts.run_query_difficulty
+```
+
+This uses all 5,000 held-out GloVe queries and the full base. The score is
+`(d10-d1)/d10` from true squared L2 distances to the validated exact top-ten
+neighbours. Queries are sorted by score, then original query row, into four
+bins of 1,250. Each index uses its frozen full-size 0.95 selection (the
+highest-recall tuned setting for IVF-PQ), and its per-query tie-aware recall
+must agree with the corresponding aggregate main benchmark run. The command
+writes `../results/query_difficulty.csv`,
+`../results/query_difficulty_analysis.md`, and PNG/PDF figures under
+`../results/figures/`. The CSV records bin counts, score ranges, settings,
+dataset checksum, and tuning and final run IDs.
