@@ -233,3 +233,34 @@ writes `../results/query_difficulty.csv`,
 `../results/query_difficulty_analysis.md`, and PNG/PDF figures under
 `../results/figures/`. The CSV records bin counts, score ranges, settings,
 dataset checksum, and tuning and final run IDs.
+
+## Part 4: synthetic cluster imbalance (Ticket 07)
+
+The Part 4 prediction was committed in `hypothesis.md` as `379f0d9` before
+synthetic data or results were generated. Run from `code/`:
+
+```bash
+.venv/bin/python -m scripts.run_cluster_imbalance
+.venv/bin/python -m scripts.analyze_cluster_imbalance
+```
+
+The seeded generator uses 96,000 vectors in 32 dimensions, 16 fixed Gaussian
+centres, and a separate fixed set of 1,024 queries. The four population ratios
+are 1:1, 4:1, 16:1, and 64:1; the first is the balanced control. Only cluster
+membership counts change. Base noise, row insertion order, centres, queries,
+and index settings remain fixed. Query clusters have 64 queries each at every
+ratio. HNSW uses `M=16, efConstruction=100, efSearch=32`; IVF-Flat uses
+`nlist=64, nprobe=4`. Both build and search with one FAISS thread; IVF k-means
+uses seed 20261021 and at most 100 training points per centroid.
+
+For each ratio, exact Flat search supplies top-ten neighbours. Results use the
+same tie-aware recall code as the main benchmark. Search timing runs one query
+per FAISS call, repeats the query set 20 times per repetition, and reports the
+median QPS of three repetitions. The runner saves 24 raw repetition rows under
+`experiment=synthetic_cluster_imbalance` in `../results/results.csv`. It skips
+complete matching runs on restart; `--force` reruns them. The analyzer writes
+`../results/cluster_imbalance_summary.csv`,
+`../results/cluster_imbalance_analysis.md`, and the single main PNG/PDF figure
+in `../results/figures/`. Source, query, and exact-neighbour hashes document
+reproducibility. Data hashes and all eight recall values matched on a second
+full run; QPS can vary with system load.
