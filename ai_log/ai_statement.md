@@ -1,10 +1,11 @@
 # AI use statement
 
-AI tools were used to plan the assignment, implement Tickets 01 through 07,
+AI tools were used to plan the assignment, implement Tickets 01 through 08,
 and draft report prose. The prompts and responses are recorded in
 `ai_log/conversation_2026-10-16.md`, `ai_log/conversation_2026-10-17.md`,
 `ai_log/conversation_2026-10-20.md`, and
-`ai_log/conversation_2026-10-21.md`.
+`ai_log/conversation_2026-10-21.md`, and
+`ai_log/conversation_2026-10-22.md`.
 
 ## Source-file classification (current workspace)
 
@@ -15,9 +16,10 @@ and draft report prose. The prompts and responses are recorded in
 | `ai_log/conversation_2026-10-16.md` | AI-generated | Transcript assembled by the AI assistant. |
 | `ai_log/ai_statement.md` | AI-generated | This statement was drafted by the AI assistant. |
 | `.gitignore` | AI-generated | Keeps downloaded datasets out of the project repository. |
+| `.gitattributes` | AI-generated | Treats generated PDF artifacts as binary in Git. |
 | `code/.gitignore` | AI-generated | Keeps data, environments, caches, and indexes out of tracked code. |
 | `code/README.md` | AI-generated | Setup, dataset, and split instructions for Ticket 01. |
-| `code/requirements.txt` | AI-generated | Pinned direct dependencies for Ticket 01. |
+| `code/requirements.txt` | AI-generated | Pinned direct dependencies, including ReportLab for Ticket 08. |
 | `code/annbench/__init__.py` | AI-generated | Package declaration. |
 | `code/annbench/data.py` | AI-generated | Dataset loading and validation. |
 | `code/annbench/benchmarks/__init__.py` | AI-generated | Placeholder package declaration. |
@@ -69,5 +71,8 @@ and draft report prose. The prompts and responses are recorded in
 | `results/cluster_imbalance_summary.csv` | AI-generated | Derived Part 4 setting table with run IDs and hashes. |
 | `results/cluster_imbalance_analysis.md` | AI-generated | Part 4 mechanism, hypothesis outcome, and limitations. |
 | `results/figures/cluster_imbalance.*` | AI-generated | Part 4 recall and QPS figure generated from measured rows. |
+| `code/scripts/build_report.py` | AI-generated | Audits result provenance and generates the five-page PDF report. |
+| `report.pdf` | AI-generated | Final report generated from measured CSV records and figures. |
+| `ai_log/conversation_2026-10-22.md` | AI-generated | Ticket 08 interaction log. |
 
 The assignment PDF is a supplied reference document, not authored here. Continue updating this table as source files are added.

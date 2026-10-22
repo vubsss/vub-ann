@@ -264,3 +264,21 @@ complete matching runs on restart; `--force` reruns them. The analyzer writes
 in `../results/figures/`. Source, query, and exact-neighbour hashes document
 reproducibility. Data hashes and all eight recall values matched on a second
 full run; QPS can vary with system load.
+
+## Five-page report (Ticket 08)
+
+After generating the main, Part 3, and Part 4 result tables and figures, run
+from `code/`:
+
+```bash
+python -m scripts.build_report
+```
+
+This writes `../report.pdf`. The command checks main threshold and memory
+tables, plotted-point IDs, Part 3 bin means, and Part 4 summary rows against
+their run-level CSV records before authoring the PDF. It also checks the
+measured values quoted in the narrative. The report includes the two main
+trade-off plots, exact-search comparison, threshold and build/memory tables,
+both preregistered experiments, and all five discussion answers. ReportLab is
+pinned in `requirements.txt`; the script uses Lato when available and falls
+back to built-in Helvetica.
